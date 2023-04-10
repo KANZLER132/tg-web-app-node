@@ -108,14 +108,14 @@ bot.on('message', async (msg) => {
 
 
 app.post('/web-data', async (req, res) => {
-    const{queryId, product} = req.body;
+    const{queryId} = req.body;
 
     try {
         await bot.answerWebAppQuery(queryId, {
             type: 'article',
             id: queryId,
             title: 'Выбор конфигурации',
-            input_message_content: {message_text: 'Ниже вы можете увидеть описание погрузчика ' + product + '\n также выбор конфигурации'}
+            input_message_content: {message_text: 'Ниже вы можете увидеть описание погрузчика '}
         })
         return res.status(200).json({});
     } catch (e) {
@@ -127,7 +127,7 @@ app.post('/web-data', async (req, res) => {
         })
         return res.status(500).json({});
     }
-
 })
+
 const PORT = 8000;
-app.listen(PORT, () => console.log('server started on PORT ' + PORT))
+app.listen(PORT, () => console.log('server started on Port ' + PORT))
