@@ -26,22 +26,21 @@ bot.on('message', async (msg) => {
             "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку", {
 
             reply_markup: {
-                inline_keyboard: [
+                keyboard: [
                     [{text: "СДЕЛАТЬ ЗАКАЗ", web_app: {url: WebAppUrl}}]
                 ]
             }
 
 
         })
-        await bot.sendMessage(chatId, "Ниже появится кнопка, по которой можете заполнить форму", {
-            reply_markup: {
-                keyboard: [
-                    [{text: "Заполнить форму", web_app: {url: WebAppUrl + './form'}}]
-                ]
-            }
-
-
-        })
+        // await bot.sendMessage(chatId, "Ниже появится кнопка, по которой можете заполнить форму", {
+        //     reply_markup: {
+        //         keyboard: [
+        //             [{text: "Заполнить форму", web_app: {url: WebAppUrl + './form'}}]
+        //         ]
+        //     }
+        //
+        // })
 
     }
     if(msg?.web_app_data?.data) {
