@@ -39,7 +39,7 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, "Приветствуем вас! мы сделали версию нашего каталога вилочных погрузчиков в телеграме и добавили возможность " +
             "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку")
 
-        return bot.sendMessage(chatId, 'Выберете тип мачты', options);
+        await bot.sendMessage(chatId, 'Выберете тип мачты', options);
 
     }
     if(msg?.web_app_data?.data) {
