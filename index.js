@@ -31,7 +31,6 @@ bot.on('message', async (msg) => {
                 ]
             }
 
-
         })
         // await bot.sendMessage(chatId, "Ниже появится кнопка, по которой можете заполнить форму", {
         //     reply_markup: {
@@ -94,9 +93,18 @@ bot.on('message', async (msg) => {
                 "type" : "photo",
                 "media": "img/FG20.4.jpg",
             }]
-
             await bot.sendMediaGroup(chatId, media);
+            await bot.sendMessage(chatId, "Выбрав конфигурацию погрузчика вы сможете увидеть конечную цену, а также получить коммерческое предложение", {
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: "Двухсекционная мачта 2.5м"}]
+                    ],
+                    inline_keyboard: [
+                        [{text: "Двухсекционная мачта 3.5м"}]
+                    ],
 
+                }
+            })
 
 
         } catch (e) {
@@ -106,27 +114,27 @@ bot.on('message', async (msg) => {
 });
 
 
-app.post('/web-data', async (req, res) => {
-    const{queryId} = req.body;
-
-    try {
-        await bot.answerWebAppQuery(queryId, {
-            type: 'article',
-            id: queryId,
-            title: 'Выбор конфигурации',
-            input_message_content: {message_text: 'Ниже вы можете увидеть описание погрузчика '}
-        })
-        return res.status(200).json({});
-    } catch (e) {
-        await bot.answerWebAppQuery(queryId, {
-            type: 'article',
-            id: queryId,
-            title: 'Не удалось посмотреть конфигурацию',
-            input_message_content: {message_text: 'Не удалось посмотреть конфигурацию'}
-        })
-        return res.status(500).json({});
-    }
-})
+// app.post('/web-data', async (req, res) => {
+//     const{queryId} = req.body;
+//
+//     try {
+//         await bot.answerWebAppQuery(queryId, {
+//             type: 'article',
+//             id: queryId,
+//             title: 'Выбор конфигурации',
+//             input_message_content: {message_text: 'Ниже вы можете увидеть описание погрузчика '}
+//         })
+//         return res.status(200).json({});
+//     } catch (e) {
+//         await bot.answerWebAppQuery(queryId, {
+//             type: 'article',
+//             id: queryId,
+//             title: 'Не удалось посмотреть конфигурацию',
+//             input_message_content: {message_text: 'Не удалось посмотреть конфигурацию'}
+//         })
+//         return res.status(500).json({});
+//     }
+// })
 
 const PORT = 8000;
 app.listen(PORT, () => console.log('server started on Port ' + PORT))
