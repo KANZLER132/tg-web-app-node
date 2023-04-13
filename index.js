@@ -21,25 +21,25 @@ bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
 
+    const options = {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'Двухсекционная 2м', callback_data: '1'}, {text: 'Двухсекционная 3м', callback_data: '2'} ]
+                [{text: 'Двухсекционная 3.5м', callback_data: '3'}, {text: 'Двухсекционная 4м', callback_data: '4'}]
+            ]
+        })
+    }
+
+    bot.on('callback_query', msg => {
+        const data = msg.data;
+        bot.sendMessage(chatId, 'Хорошо')
+    })
+
     if (text === "/start") {
         await bot.sendMessage(chatId, "Приветствуем вас! мы сделали версию нашего каталога вилочных погрузчиков в телеграме и добавили возможность " +
-            "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку", {
+            "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку")
 
-            reply_markup: {
-                keyboard: [
-                    [{text: "СДЕЛАТЬ ЗАКАЗ", web_app: {url: WebAppUrl}}]
-                ]
-            }
-
-        })
-        // await bot.sendMessage(chatId, "Ниже появится кнопка, по которой можете заполнить форму", {
-        //     reply_markup: {
-        //         keyboard: [
-        //             [{text: "Заполнить форму", web_app: {url: WebAppUrl + './form'}}]
-        //         ]
-        //     }
-        //
-        // })
+        return bot.sendMessage(chatId, 'Выберете тип мачты', options);
 
     }
     if(msg?.web_app_data?.data) {
@@ -114,27 +114,7 @@ bot.on('message', async (msg) => {
 });
 
 
-// app.post('/web-data', async (req, res) => {
-//     const{queryId} = req.body;
-//
-//     try {
-//         await bot.answerWebAppQuery(queryId, {
-//             type: 'article',
-//             id: queryId,
-//             title: 'Выбор конфигурации',
-//             input_message_content: {message_text: 'Ниже вы можете увидеть описание погрузчика '}
-//         })
-//         return res.status(200).json({});
-//     } catch (e) {
-//         await bot.answerWebAppQuery(queryId, {
-//             type: 'article',
-//             id: queryId,
-//             title: 'Не удалось посмотреть конфигурацию',
-//             input_message_content: {message_text: 'Не удалось посмотреть конфигурацию'}
-//         })
-//         return res.status(500).json({});
-//     }
-// })
+
 
 const PORT = 8000;
 app.listen(PORT, () => console.log('server started on Port ' + PORT))
