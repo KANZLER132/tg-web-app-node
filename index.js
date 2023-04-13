@@ -13,6 +13,7 @@ const WebAppUrl = "https://polite-boba-b5f6a5.netlify.app/";
 const app = express();
 
 
+
 app.use(express.json());
 app.use(cors());
 
@@ -24,26 +25,56 @@ bot.on('message', async (msg) => {
     const options = {
         reply_markup: JSON.stringify({
             inline_keyboard: [
-                [{text: 'Двухсекционная 2м', callback_data: '1'}, {text: 'Двухсекционная 3м', callback_data: '2'}],
-                [{text: 'Двухсекционная 3.5м', callback_data: '3'}, {text: 'Двухсекционная 4м', callback_data: '4'}],
+                [{text: 'Двухсекционная 2м', callback_data: '1'}, {text: 'Двухсекционная 3м', callback_data: '1'}],
+                [{text: 'Двухсекционная 3.5м', callback_data: '1'}, {text: 'Двухсекционная 4м', callback_data: '1'}],
             ]
         })
     }
 
-    bot.on('callback_query', msg => {
-        const data = msg.data;
-        bot.sendMessage(chatId, 'Хорошо');
-    })
+    const options1 = {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'Стандартные', callback_data: '2'}],
+                [{text: 'Спаренные', callback_data: '2'}],
+            ]
+        })
+    }
+
+    const options3 = {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'Сайд-шифт', callback_data: '3'}],
+
+            ]
+        })
+    }
+    const options4 = {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'Кондиционер', callback_data: '4'}],
+
+            ]
+        })
+    }
+
 
     if (text === "/start") {
         await bot.sendMessage(chatId, "Приветствуем вас! мы сделали версию нашего каталога вилочных погрузчиков в телеграме и добавили возможность " +
-            "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку")
-
-
+            "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку", {
+            reply_markup: {
+                keyboard: [
+                    [{text: 'СДЕЛАТЬ ЗАКАЗ', web_app: {url: WebAppUrl}}]
+                ]
+            }
+        })
     }
+
+
+
+
     if(msg?.web_app_data?.data) {
         try {
-            const data = JSON.parse(msg?.web_app_data?.data)
+            // const data = JSON.parse(msg?.web_app_data?.data)
             let media = [{
                 "type" : "photo",
                 "media": "img/FG20.jpg",
@@ -96,11 +127,57 @@ bot.on('message', async (msg) => {
             await bot.sendMessage(chatId, 'Выберете тип мачты', options);
 
 
-
         } catch (e) {
             console.log(e);
         }
     }
+    bot.on('callback_query',  msg => {
+        const data = msg.data
+        if (data) {
+            let counter = 0;
+            if (data === '1') {
+                if (counter < 1) {
+                    counter++;
+                    return bot.sendMessage(chatId, "Выберете колеса", options1);
+                }
+                else {
+                    counter--;
+                }
+            } else if (data === '2') {
+                if (counter < 1) {
+                    counter++;
+                    return  bot.sendMessage(chatId, "Дополнительно", options3);
+                }
+                else {
+                    counter--;
+                }
+
+            } else if (data === '3') {
+                if (counter < 1) {
+                    counter++;
+                    return  bot.sendMessage(chatId, "Дополнительно", options4);
+                }
+                else {
+                    counter--;
+                }
+            }
+            else {
+                const  opt = {
+                    caption: "Цена вашего погрузчика : 💸" + "\n" +
+                        "✅Также вы можете ознакомиться с нашим коммерческим предложением",
+                }
+                if (counter < 1) {
+                    counter++;
+                    return  bot.sendDocument(chatId, "documents/offer.pdf",  opt);
+                }
+                else {
+                    counter--;
+                }
+
+            }
+        }
+    })
+
 });
 
 
