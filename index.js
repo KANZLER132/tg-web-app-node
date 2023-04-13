@@ -24,22 +24,21 @@ bot.on('message', async (msg) => {
     const options = {
         reply_markup: JSON.stringify({
             inline_keyboard: [
-                [{text: 'Двухсекционная 2м', callback_data: '1'}, {text: 'Двухсекционная 3м', callback_data: '2'} ]
-                [{text: 'Двухсекционная 3.5м', callback_data: '3'}, {text: 'Двухсекционная 4м', callback_data: '4'}]
+                [{text: 'Двухсекционная 2м', callback_data: '1'}, {text: 'Двухсекционная 3м', callback_data: '2'}],
+                [{text: 'Двухсекционная 3.5м', callback_data: '3'}, {text: 'Двухсекционная 4м', callback_data: '4'}],
             ]
         })
     }
 
     bot.on('callback_query', msg => {
         const data = msg.data;
-        bot.sendMessage(chatId, 'Хорошо')
+        bot.sendMessage(chatId, 'Хорошо');
     })
 
     if (text === "/start") {
         await bot.sendMessage(chatId, "Приветствуем вас! мы сделали версию нашего каталога вилочных погрузчиков в телеграме и добавили возможность " +
             "выбора конфигурации прямо в приложении. Для того чтобы сделать заказ - нажмите на кнопку")
 
-        await bot.sendMessage(chatId, 'Выберете тип мачты', options);
 
     }
     if(msg?.web_app_data?.data) {
@@ -94,17 +93,8 @@ bot.on('message', async (msg) => {
                 "media": "img/FG20.4.jpg",
             }]
             await bot.sendMediaGroup(chatId, media);
-            await bot.sendMessage(chatId, "Выбрав конфигурацию погрузчика вы сможете увидеть конечную цену, а также получить коммерческое предложение", {
-                reply_markup: {
-                    inline_keyboard: [
-                        [{text: "Двухсекционная мачта 2.5м"}]
-                    ],
-                    inline_keyboard: [
-                        [{text: "Двухсекционная мачта 3.5м"}]
-                    ],
+            await bot.sendMessage(chatId, 'Выберете тип мачты', options);
 
-                }
-            })
 
 
         } catch (e) {
